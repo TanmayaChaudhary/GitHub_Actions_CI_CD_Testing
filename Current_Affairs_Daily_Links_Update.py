@@ -61,7 +61,7 @@ for li_element in all_daily_updates_list:
     try:
         pdf_links = soup.find_all('a', class_='btn pdf')
         pdf_download_link = pdf_links[1].get('href')
-        print(pdf_download_link)
+        print(f"PDF Download Link: {pdf_download_link} \n")
     except:
         pdf_download_link = "Not available now!"
         logging.error(f"pdf download link not available for {href_url}!")
