@@ -33,7 +33,7 @@ data = []
 current_dir = os.path.dirname(os.path.abspath(__file__))
 print(f"current directory : {current_dir}")
 
-file_path = os.path.join(current_dir, 'daily_current_affairs_links1.csv')
+file_path = os.path.join(current_dir, 'daily_current_affairs_links.csv')
 print(f"File Path : {file_path}")
 
 try:
@@ -76,6 +76,7 @@ for li_element in all_daily_updates_list:
 # Concatenate the data to the DataFrame
 combined_data = pd.concat([pd.DataFrame(data), existing_data])
 
+print(f"File Path : {file_path}")
 # Save the combined data to the CSV file
 combined_data.to_csv(file_path, index=False)
 
