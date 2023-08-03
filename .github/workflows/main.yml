@@ -23,3 +23,9 @@ jobs:
     - name: Run Python script
       run: python Current_Affairs_Daily_Links_Update.py
       working-directory: .  # Set the working directory to the repository root
+
+    - name: Upload CSV as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: csv-artifact
+        path: daily_current_affairs_links.csv
