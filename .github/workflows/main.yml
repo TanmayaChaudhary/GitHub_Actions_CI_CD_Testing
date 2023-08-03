@@ -1,0 +1,25 @@
+name: Daily Update
+
+on:
+  schedule:
+    - cron: '*/3 * * * *'  # This cron expression runs the workflow every day at 5 PM IST 
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+
+    - name: Install dependencies
+      run: pip install pandas requests beautifulsoup4 openpyxl
+
+    - name: Run Python script
+      run: python Current_Affairs_Daily_Links_Update.py
+      working-directory: .  # Set the working directory to the repository root
