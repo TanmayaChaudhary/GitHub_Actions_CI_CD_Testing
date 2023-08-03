@@ -1,13 +1,10 @@
-############################################# With Logging ################################################
-
 import pandas as pd
 import requests
 import logging
 from datetime import datetime
 from bs4 import BeautifulSoup
 
-print("!! Script Run Started !!")
-
+print("!! Script Run Start !!")
 # Configure logging
 logging.basicConfig(filename='web_scraping.log', level=logging.INFO,
                     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -31,15 +28,21 @@ data = []
 
 # Load the existing Excel file (if any) into a DataFrame
 try:
-    # existing_data = pd.read_excel('daily_current_affairs_links.xlsx')
     existing_data = pd.read_csv('daily_current_affairs_links.csv')
 except FileNotFoundError:
     existing_data = pd.DataFrame(columns=["Date", "Link", "PDF Download Link"])
 
 # Iterate over the list and extract the date and link
 for li_element in all_daily_updates_list:
-    href_url = li_element.find('a')['href']
-    date = datetime.strptime(href_url.split('/')[-1], "%d-%m-%Y").strftime("%d %B %Y")
+    try:
+
+        href_url = li_element.find('a')['href']
+        date = datetime.strptime(href_url.split('/')[-1], "%d-%m-%Y").strftime("%d %B %Y")
+
+        print(f"Date : {date}, Link : {href_url}")
+
+    except:
+        logging.error(f"href_url not present !")    
 
     # Log the date
     logging.info(f"Date: {date}")
@@ -47,13 +50,21 @@ for li_element in all_daily_updates_list:
     # Find PDF download link
     response = requests.get(href_url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    pdf_links = soup.find_all('a', class_='btn pdf')
-    pdf_download_link = pdf_links[1].get('href')
 
+    try:
+
+        pdf_links = soup.find_all('a', class_='btn pdf')
+        print(pdf_links)
+        
+        pdf_download_link = pdf_links[1].get('href')
+        print(pdf_download_link)
+    except:
+        pdf_download_link = "Not available now!"
+        logging.error(f"pdf download link not available for {href_url}!")
+
+    
     # Log the PDF download link
     logging.info(f"PDF Download Link: {pdf_download_link}")
-
-    print(f"PDF Download Link: {pdf_download_link}")
 
     # Check if the date already exists in the existing data
     if date not in existing_data['Date'].values:
@@ -63,7 +74,6 @@ for li_element in all_daily_updates_list:
 combined_data = pd.concat([pd.DataFrame(data), existing_data])
 
 # Save the combined data to the Excel file
-#combined_data.to_excel('daily_current_affairs_links.xlsx', index=False)
 combined_data.to_csv('daily_current_affairs_links.csv', index=False)
 
 logging.info("Daily Current Affairs List Successfully Updated!")
