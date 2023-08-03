@@ -29,3 +29,9 @@ jobs:
       with:
         name: csv-artifact
         path: daily_current_affairs_links.csv
+
+    - name: Upload logs as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: logs-artifact
+        path: web_scraping.log
