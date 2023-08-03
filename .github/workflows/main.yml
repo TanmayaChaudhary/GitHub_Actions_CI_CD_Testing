@@ -8,10 +8,6 @@ jobs:
   update_and_download:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        file_name: [daily_current_affairs_links.csv]
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -28,11 +24,17 @@ jobs:
       run: python Current_Affairs_Daily_Links_Update.py
       working-directory: .  # Set the working directory to the repository root
 
+    - name: Save CSV as artifact
+      if: always()  # Always run this step, even if the script fails
+      run: mv daily_current_affairs_links.csv ${{ github.workspace }}/daily_current_affairs_links.csv
+      continue-on-error: true  # Continue even if the file doesn't exist
+
     - name: Upload CSV as artifact
+      if: always()  # Always run this step, even if the script fails
       uses: actions/upload-artifact@v2
       with:
         name: csv-artifact
-        path: ${{ matrix.file_name }}
+        path: ${{ github.workspace }}/daily_current_affairs_links.csv
 
     - name: Download artifact
       uses: actions/download-artifact@v2
@@ -40,12 +42,12 @@ jobs:
         name: csv-artifact
 
     - name: Move CSV to repository root
-      run: mv ${{ github.workspace }}/csv-artifact/${{ matrix.file_name }} .
+      run: mv ${{ github.workspace }}/csv-artifact/daily_current_affairs_links.csv .
 
     - name: Commit and push changes
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git add ${{ matrix.file_name }}
-        git commit -m "Update ${{ matrix.file_name }}"
+        git add daily_current_affairs_links.csv
+        git commit -m "Update daily_current_affairs_links.csv"
         git push origin HEAD
