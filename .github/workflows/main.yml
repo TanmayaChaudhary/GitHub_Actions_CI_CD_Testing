@@ -8,6 +8,10 @@ jobs:
   update_and_download:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        file_name: [daily_current_affairs_links.csv]
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -28,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: csv-artifact
-        path: daily_current_affairs_links.csv
+        path: ${{ matrix.file_name }}
 
     - name: Download artifact
       uses: actions/download-artifact@v2
@@ -36,12 +40,12 @@ jobs:
         name: csv-artifact
 
     - name: Move CSV to repository root
-      run: mv ${{ github.workspace }}/csv-artifact/daily_current_affairs_links.csv .
+      run: mv ${{ github.workspace }}/csv-artifact/${{ matrix.file_name }} .
 
     - name: Commit and push changes
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git add daily_current_affairs_links.csv
-        git commit -m "Update daily_current_affairs_links.csv"
+        git add ${{ matrix.file_name }}
+        git commit -m "Update ${{ matrix.file_name }}"
         git push origin HEAD
