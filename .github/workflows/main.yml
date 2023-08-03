@@ -2,7 +2,7 @@ name: Daily Update
 
 on:
   schedule:
-    - cron: '*/3 * * * *'  # This cron expression runs the workflow every day at 5 PM IST 
+    - cron: '30 11 * * *'  # This cron expression runs the workflow every day at 5 PM IST 
 
 jobs:
   update:
