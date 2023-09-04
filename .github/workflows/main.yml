@@ -2,7 +2,7 @@ name: Daily Update
 
 on:
   schedule:
-    - cron: '30 11 * * *'  # This cron expression runs the workflow every day at 5 PM IST 
+    - cron: '*/3 * * * *'  # This cron expression runs the workflow every day at 5 PM IST 
 
 jobs:
   update:
@@ -35,3 +35,11 @@ jobs:
       with:
         name: logs-artifact
         path: web_scraping.log
+
+    - name: Commit changes
+      run:
+          git config --local user.email "tanmaychaudhary95@gmail.com"
+          git config --local user.name "Tanmaya Chaudhary"
+          git add daily_current_affairs_links.csv
+          git commit -m "Append data to csv file"
+          git push
