@@ -51,7 +51,7 @@ jobs:
     - name: Update branch and push changes
       run: |
         git branch -M main
-        git push https://${{secrets.GIT_PAT}}@github.com/TanmayaChaudhary/GitHub_Actions_CI_CD_Testing.git main
+        git push https://${{secrets.GIT_PAT}}@github.com/TanmayaChaudhary/GitHub_Actions_CI_CD_Testing main
     
     
         
