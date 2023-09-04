@@ -43,10 +43,10 @@ jobs:
         fi
     
     - name: Set Git user email
-      run: git config --local user.email "tanmaychaudhary95@gmail.com"
+      run: git config --global user.email "tanmaychaudhary95@gmail.com"
     
     - name: Set Git user name
-      run: git config --local user.name "Tanmaya Chaudhary"
+      run: git config --global user.name "Tanmaya Chaudhary"
     
     - name: Update branch and push changes
       run: |
