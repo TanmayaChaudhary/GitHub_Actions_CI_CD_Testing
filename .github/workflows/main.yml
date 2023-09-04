@@ -36,14 +36,16 @@ jobs:
         name: logs-artifact
         path: web_scraping.log
 
-    - name: Set Git user email and name
-      run:
-        git config --local user.email "tanmaychaudhary95@gmail.com"
-        git config --local user.name "Tanmaya Chaudhary"
-    
+    - name: Set Git user email
+      run: git config --global user.email "tanmaychaudhary95@gmail.com"
+
+    - name: Set Git user name
+      run: git config --global user.name "Tanmaya Chaudhary"
+
     - name: Add Git remote and push changes
-      run:
-        git remote add origin https://github.com/TanmayaChaudhary/GitHub_Actions_CI_CD_Testing.git
-        git branch -M main
-        git push https://${{secrets.GIT_PAT}}@github.com/TanmayaChaudhary/GitHub_Actions_CI_CD_Testing.git main
+      run: |
+          git remote add origin https://github.com/TanmayaChaudhary/GitHub_Actions_CI_CD_Testing.git
+          git branch -M main
+          git push https://${{secrets.GIT_PAT}}@github.com/TanmayaChaudhary/GitHub_Actions_CI_CD_Testing.git main
+
     
